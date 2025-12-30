@@ -1,0 +1,38 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    depends_on:
+      - spark-master
+    command: sleep infinity
+
+  spark-master:
+    image: apache/spark:4.0.0-scala2.13-java17-ubuntu
+    command: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.master.Master", "-h", "spark-master"]
+    environment:
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=8080
+      - SPARK_RPC_AUTH_ENABLED=false
+      - SPARK_RPC_ENCRYPTION_ENABLED=false
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=false
+    ports:
+      - 8080:8080
+      - 7077:7077
+    volumes:
+      - ./data/:/workspace/data/:ro
+
+  spark-worker:
+    image: apache/spark:4.0.0-scala2.13-java17-ubuntu
+    command: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.worker.Worker", "spark://spark-master:7077"]
+    environment:
+      - SPARK_MASTER_URL=spark://spark-master:7077 
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=1g
+    depends_on:
+      - spark-master
+    volumes:
+      - ./data/:/workspace/data/:ro
