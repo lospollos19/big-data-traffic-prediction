@@ -19,7 +19,7 @@ git lfs pull
 # 3. Define source and destination base directories
 # The script runs inside the container where your repo is at /workspace
 DATA_DIR="/workspace/project"
-DEST_BASE_DIR="/workspace/project/dataset"
+DEST_BASE_DIR="/workspace/project/"
 
 # 4. Ensure the main destination directory exists
 mkdir -p "$DEST_BASE_DIR"
