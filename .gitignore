@@ -1,3 +1,27 @@
+# sbt / Scala
+target/
+.bsp/
+.bloop/
+.metals/
 .sbt/
+.ivy2/
+metals.sbt
+
+# Editors
+.idea/
+.vscode/
+*.iml
+
+# Data and outputs
+dataset/
+*.zip
+*.parquet
+models/
+logs/
+spark-warehouse/
+
+# OS
 .DS_Store
-project/dataset.zip
+
+# Claude
+.claude/
